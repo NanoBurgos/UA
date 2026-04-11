@@ -1,5 +1,5 @@
 /* Investiga cómo imprimir caracteres especiales ( acentos, ñ) en C 
-Metodo 2 - Usando la biblioteca*/
+Metodo 2 - Usando la biblioteca <windows.h> */
 #include<stdio.h>
 #include <windows.h>
 
@@ -20,6 +20,6 @@ return 0;
 	
 	Alternativa rapida si es solo para mostrar texto
 
-    OBS: No funciona en todos los sistemas operativos
+    OBS: No funciona en todos los sistemas operativos, En embarcadero C++ (rojo) si deja elegir el tipo de codificacion antes de compilar
 
 */
