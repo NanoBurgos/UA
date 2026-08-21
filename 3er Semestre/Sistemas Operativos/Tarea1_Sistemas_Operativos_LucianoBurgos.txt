@@ -1,0 +1,71 @@
+Registros reales de un procesador actual
+
+Elegí una arquitectura conocida (x86-64 o ARM) — ¿qué registros tiene y para qué se usan?
+
+La arquitectura x86-64 cuenta con 16 registros principales de propósito general de 64 bits y registros de control especiales que el procesador utiliza para realizar cálculos, almacenar datos de forma temporal y dirigir el flujo del programa
+
+RAX (Acumulador): Se usa para realizar operaciones aritméticas y guardar el valor de retorno cuando una función termina.
+
+RBX (Base): Tradicionalmente se usa como un puntero base para almacenar datos o direcciones de memoria.
+
+RCX (Contador): Funciona como un contador automático para repetir bucles (loops) de código.
+
+RDX (Datos): Se combina con RAX para realizar multiplicaciones y divisiones grandes, o para operaciones de entrada/salida.
+
+RSI (Índice de origen - Source Index): Guarda la dirección de memoria desde donde se van a leer o copiar datos.
+
+RDI (Índice de destino - Destination Index): Guarda la dirección de memoria hacia donde se van a escribir o copiar datos.
+
+RSP (Puntero de pila - Stack Pointer): Apunta siempre al final de la pila de memoria activa (stack), vital para guardar variables locales y llamadas a funciones.
+
+RBP (Puntero base - Base Pointer): Ayuda a mantener una referencia fija dentro de la pila para localizar los datos de la función actual.
+
+R8 al R15: Ocho registros adicionales de propósito general agregados específicamente en la expansión a 64 bits para dar mayor espacio de trabajo al procesador.
+
+Interrupciones (IRQ) en la práctica
+
+Buscá cómo el Administrador de dispositivos (Windows) o /proc/interrupts (Linux) muestra las interrupciones reales de una PC
+
+En Windows, las interrupciones se pueden examinar en el Administrador de dispositivos mediante la vista de recursos por tipo, mientras que en Linux se leen directamente desde el archivo virtual
+
+Cómo ver las IRQ en Windows:
+Abrir el Administrador de dispositivos (escribiendo devmgmt.msc en el menú Ejecutar).
+2. En la barra superior, hacer clic en Ver.
+3. Seleccionar Recursos por tipo.
+4. Desplegar la categoría Solicitud de interrupción (IRQ). Ahí verás qué números de IRQ tiene asignados cada componente de hardware actual (como tarjetas de red o controladores de almacenamiento)
+
+Cómo ver las IRQ en Linux
+En la terminal de Linux, se ejecuta el siguiente comando:
+cat /proc/interrupts
+
+Este archivo muestra una tabla detallada con la siguiente estructura:
+
+Primera columna: El número de la interrupción (IRQ) o vector.
+Columnas intermedias: La cantidad de veces que cada núcleo de la CPU ha atendido esa interrupción (habrá tantas columnas como núcleos tenga tu procesador).
+Siguientes columnas: El controlador de interrupciones o tipo (por ejemplo, IO-APIC-edge).
+Última columna: El nombre del dispositivo o controlador de hardware asociado (por ejemplo, keyboard, eth0, timer).
+
+Niveles de caché en un procesador actual
+Buscá la ficha técnica de un procesador (Intel, AMD o similar) — ¿cuánta caché L1, L2 y L3 tiene?
+
+Ejemplo de Ficha Técnica: AMD Ryzen 7 9700X
+Tomando como referencia un procesador moderno de escritorio de AMD:
+Caché L1: 640 KB en total (dividida por núcleo).
+Caché L2: 8 MB en total (1 MB por núcleo).
+Caché L3: 32 MB (compartida).
+
+Niveles de Memoria Caché
+Caché L1 (Nivel 1): Es la más pequeña, rápida y cercana a cada núcleo. Se divide en datos e instrucciones. Suele medir entre 32 KB y 64 KB por núcleo.
+Caché L2 (Nivel 2): Es más grande que la L1 pero un poco más lenta. Puede ser exclusiva de cada núcleo o compartida entre pocos. Varía típicamente entre 1 MB y 2 MB por núcleo.
+Caché L3 (Nivel 3): Es la de mayor capacidad y es compartida por todos los núcleos del procesador. Su tamaño varía notablemente según el modelo.
+
+DMA en la práctica
+Buscá un ejemplo real de uso de DMA hoy en día (tarjetas de sonido, GPU, SSD NVMe)
+
+Un ejemplo real y moderno del uso de DMA (Acceso Directo a Memoria) en una PC actual es la tecnología Microsoft DirectStorage, la cual permite que un SSD NVMe transfiera texturas y mundos de juegos directamente a la memoria de la GPU (VRAM) sin la intervención de la CPU.
+
+¿Cómo funciona este ejemplo en la práctica?El problema tradicional sin DMA: Cuando jugás o renderizás un escenario pesado, el SSD NVMe lee los datos del archivo, se los entrega a la CPU para que los procese o descomprima, la CPU los pasa a la memoria RAM del sistema y, finalmente, la tarjeta gráfica los copia a su propia memoria (VRAM). Esto satura al procesador principal y causa tiempos de carga largos.
+
+La solución con DMA (DirectStorage): Gracias al bus de alta velocidad PCI Express (PCIe) y los controladores de acceso directo, el SSD NVMe utiliza DMA para enviar los bloques de datos comprimidos directamente a la memoria de la GPU.
+
+El rol de la GPU: La tarjeta gráfica se encarga de descomprimir esos datos por su cuenta utilizando sus propios núcleos de cálculo, liberando a la CPU casi por completo de esa tarea.
